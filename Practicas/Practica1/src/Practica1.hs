@@ -10,12 +10,12 @@
 
 module Practica1 where
 
---Funcion que recibe cuatro enteros y calcula la derivada de la funcion f(x) =ax^2 + bx + c
+--Función que recibe cuatro enteros y calcula la derivada de la Función f(x) =ax^2 + bx + c
 --el primer elemento corresponde a a, el segundo a b, el tercero a c yel cuarto a x
 deriva :: Int -> Int -> Int -> Int -> Int
 deriva a b c x = 2*a*x + b
 
---funcion que recibe dos numeros de punto flotante, elprimer parametro corresponde al radio de un cilindro, el segundo a la altura
+--Función que recibe dos numeros de punto flotante, elprimer parametro corresponde al radio de un cilindro, el segundo a la altura
 --Area del cilindro
 areaCilindro :: Float -> Float -> Float
 areaCilindro a b = 2*3.1416*a*(a+b)
@@ -24,7 +24,7 @@ areaCilindro a b = 2*3.1416*a*(a+b)
 volumenCilindro :: Float -> Float -> Float
 volumenCilindro a b = 3.1416*a*a*b
 
---funcion que recibe tres parametros, el primero indica la operacion que se desea realizar,
+--Función que recibe tres parametros, el primero indica la operacion que se desea realizar,
 --el segundo un numero y el tercero otro numero, las operaciones que se pueden hacer son:
 --'s'-Devuelve el segundo parametro
 --'t'-Devuelve el tercer parametro
@@ -44,27 +44,27 @@ aplicaOperacion z x y
   | z == 'e' = x^y
   | otherwise = error "opcion no valida, vuelve a intentarlo con una ocion valida"
 
---funcion que reciba un entero y devuelva la proxima entrada a su raiz cuadrada
+--Función que reciba un entero y devuelva la proxima entrada a su raiz cuadrada
 raizEntera :: Int -> Int
 raizEntera x = round (sqrt (realToFrac x))
 
---funcion que recibe un entero n y devuelve la suma de los primeros n numeros naturales
+--Función que recibe un entero n y devuelve la suma de los primeros n numeros naturales
 sumaNat :: Int -> Int
 sumaNat 0 = 0
 sumaNat n = n + (sumaNat (n-1))
 
---funciones de orden superior
+--Funciónes de orden superior
 --recibe un numero n y devuelve los primeros n terminos de la sucecion tribonacci que inicia con [0,1,1].
 tribonaccies :: Int -> [Int]
 tribonaccies n = map fi [0..n]
 
---funcion que recibe una lista y elimina los duplicados adyacentes de la lista, dejando una presencia de cada elemento
+--Función que recibe una lista y elimina los duplicados adyacentes de la lista, dejando una presencia de cada elemento
 eliminaDup :: (Eq a) => [a] ->  [a]
 eliminaDup [] = []
 eliminaDup (x:xs) = eliminaAux x xs
 
 --operaciones con listas
---funcion que recibe una lista y devuelve la misma pero en el orden inverso
+--Función que recibe una lista y devuelve la misma pero en el orden inverso
 reversa :: [a] -> [a]
 reversa [] = []
 reversa (x:xs) = reversa(xs) ++ [x]
@@ -95,14 +95,14 @@ fi 1 = 1
 fi 2 = 1
 fi n = (fi(n-1))+(fi(n-2))+(fi(n-3))
 
---función que elimina los duplicados adyacentes de una lista, empezando por la cabeza.
+--Función que elimina los duplicados adyacentes de una lista, empezando por la cabeza.
 eliminaAux :: (Eq a) => a -> [a]  -> [a]
 eliminaAux y [] = [y]
 eliminaAux y (x:xs) = if (y == x)
                       then eliminaAux y xs 
                       else [y] ++ eliminaAux x xs
 
---función que elimina los duplicados adyacentes de una lista, empezando por la cabeza.
+--Función que elimina los duplicados adyacentes de una lista, empezando por la cabeza.
 rep :: (Eq a) => [a] -> [a]
 rep [] = []
 rep (x:xs) = if((length (x:xs)) > 1)
