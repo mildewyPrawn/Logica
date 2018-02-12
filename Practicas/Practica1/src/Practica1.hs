@@ -20,7 +20,7 @@ deriva a b c x = 2*a*x + b
 areaCilindro :: Float -> Float -> Float
 areaCilindro a b = 2*3.1416*a*(a+b)
 
---Volumen del cilindro
+--Volumen de un cilindro.
 volumenCilindro :: Float -> Float -> Float
 volumenCilindro a b = 3.1416*a*a*b
 
