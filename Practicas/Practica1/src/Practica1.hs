@@ -58,26 +58,10 @@ sumaNat n = n + (sumaNat (n-1))
 tribonaccies :: Int -> [Int]
 tribonaccies n = map fi [0..n]
 
---tribonaccies = error "solo es para que compile"
---recibe una lista y elimina los duplicados adyacentes de la lista, dejando una presencia de cada elemento
-eliminaDup :: [a] -> [a]
---eliminaDup (x:xs) = error "Igual es solo para que compile"
+--funcion que recibe una lista y elimina los duplicados adyacentes de la lista, dejando una presencia de cada elemento
+eliminaDup :: (Eq a) => [a] ->  [a]
 eliminaDup [] = []
 eliminaDup (x:xs) = eliminaAux x xs
-
-eliminaAux y [] = [y]
-eliminaAux y (x:xs) = if (y == x)
-                    then [y]++eliminaAux y xs
-                    else [y]++[x]++eliminaAux x xs
-
-prueba = rep [4,1,1,1,1,23,23,23,4]
-
----funcion auxiliar que recibe una lista y te dice si el primer elemento es igual al segundo 
-rep :: (Eq a) => [a] -> [a]
-rep [] = []
-rep (x:y:xs) = if(x == y)
-                      then rep (y:xs)
-                      else [x] ++ rep (y:xs)
 
 --operaciones con listas
 --funcion que recibe una lista y devuelve la misma pero en el orden inverso
@@ -110,6 +94,22 @@ fi 0 = 0
 fi 1 = 1
 fi 2 = 1
 fi n = (fi(n-1))+(fi(n-2))+(fi(n-3))
+
+--función que elimina los duplicados adyacentes de una lista, empezando por la cabeza.
+eliminaAux :: (Eq a) => a -> [a]  -> [a]
+eliminaAux y [] = [y]
+eliminaAux y (x:xs) = if (y == x)
+                      then eliminaAux y xs 
+                      else [y] ++ eliminaAux x xs
+
+--función que elimina los duplicados adyacentes de una lista, empezando por la cabeza.
+rep :: (Eq a) => [a] -> [a]
+rep [] = []
+rep (x:xs) = if((length (x:xs)) > 1)
+                    then if(x == xs !! 0)
+                         then rep xs
+                         else [x] ++ rep xs
+                    else [x]
 
 ----------------------------------------------------------------------------------
 --                                 PRUEBAS                                      --
@@ -153,10 +153,10 @@ tribonaccies1 = tribonaccies 4
 --Resultado: [0,1,1,2,4]
 tribonaccies2 = tribonaccies 17
 --Resultado: [0,1,1,2,4,7,13,24,44,81,149,274,504,927,1705,3136,5768,10609]
---eliminaDup1
---Resultado:
---eliminaDup2
---Resultado:
+eliminaDup1 = eliminaDup [1,1,1,1,1,1,2,2,2,2,2,3,3,3,3,4,4,4,5,5,5,6,7,7,7,7,8,8,8,8,9,9,9,0,0,0]
+--Resultado: [1,2,3,4,5,6,7,8,9,0]
+eliminaDup2 = eliminaDup [1,1,2,2,1,1,2,2,1,1,2,2,1,1,2,2,1,1,2,2]
+--Resultado: [1,2,1,2,1,2,1,2,1,2]
 reversa1 = reversa [0,1,2,3,4,5,6,7,8,9]
 --Resultado: [9,8,7,6,5,4,3,2,1,0]
 reversa2 = reversa ["a","b","c","d","e"]
