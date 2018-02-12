@@ -71,12 +71,13 @@ reversa (x:xs) = reversa(xs) ++ [x]
 
 --recibe una lista y devuelve los elementos de la lista que cumplen el predicado recibido
 filtra :: (a -> Bool) -> [a] -> [a]
-filtra = error "error"
+filtra p xs = [x | x <- xs, p x]
 
 --recibe una lista y devuelve una lista con pares ordenados (k,x), donde k es el maximo numero de apariciones
 --consecutivas del elemento x.
 apariciones :: [a] -> [(Int,a)]
-apariciones = error "solo es para Que compile"
+apariciones [] = []
+--apariciones = error "solo es para Que compile"
 
 --listas por comprencion
 lista1 = [x-1 | x <- [2^y | y <- [0..6]]]
