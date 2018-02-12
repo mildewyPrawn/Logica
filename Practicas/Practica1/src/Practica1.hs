@@ -5,14 +5,15 @@
 --Practica1
 --alumno: Galeana Araujo Emiliano
 --alumno: Verdugo Rodriguez Jesus Daniel
---No de Cuenta:
+--No de Cuenta: 314032324
+--No de Cuenta: 417
 
 module Practica1 where
 
 --Funcion que recibe cuatro enteros y calcula la derivada de la funcion f(x) =ax^2 + bx + c
 --el primer elemento corresponde a a, el segundo a b, el tercero a c yel cuarto a x
 deriva :: Int -> Int -> Int -> Int -> Int
-deriva a b c x = a*2*x + b*x
+deriva a b c x = 2*a*x + b
 
 --funcion que recibe dos numeros de punto flotante, elprimer parametro corresponde al radio de un cilindro, el segundo a la altura
 --Area del cilindro
@@ -21,7 +22,8 @@ areaCilindro a b = 2*3.1416*a*(a+b)
 
 --Volumen del cilindro
 volumenCilindro :: Float -> Float -> Float
-volumenCilindro a b = 2*3.1416*a*a*b
+--volumenCilindro a b = 2*3.1416*a*a*b
+volumenCilindro a b = 3.1416*a*a*b
 
 --funcion que recibe tres parametros, el primero indica la operacion que se desea realizar,
 --el segundo un numero y el tercero otro numero, las operaciones que se pueden hacer son:
@@ -50,16 +52,17 @@ raizEntera x = round (sqrt (realToFrac x))
 --funcion que recibe un entero n y devuelve la suma de los primeros n numeros naturales
 sumaNat :: Int -> Int
 sumaNat 0 = 0
-sumaNat n = n + (sumaNat n-1)
+sumaNat n = n + (sumaNat (n-1))
 
 --funciones de orden superior
 --recibe un numero n y devuelve los primeros n terminos de la sucecion tribonacci que inicia con [0,1,1].
 tribonaccies :: Int -> [Int]
 tribonaccies n = map fi [0..n]
+
 --tribonaccies = error "solo es para que compile"
 --recibe una lista y elimina los duplicados adyacentes de la lista, dejando una presencia de cada elemento
 eliminaDup :: [a] -> [a]
-eliminaDup (x:xs) = xs
+eliminaDup (x:xs) = error "Igual es solo para que compile"
 
 prueba = rep [4,1,1,1,1,23,23,23,4]
 
@@ -74,6 +77,7 @@ rep (x:y:xs) = if(x == y)
 reversa :: [a] -> [a]
 reversa [] = []
 reversa (x:xs) = reversa(xs) ++ [x]
+
 --recibe una lista y devuelve los elementos de la lista que cumplen el predicado recibido
 filtra :: (a -> Bool) -> [a] -> [a]
 filtra = error "error"
@@ -81,15 +85,18 @@ filtra = error "error"
 --recibe una lista y devuelve una lista con pares ordenados (k,x), donde k es el maximo numero de apariciones
 --consecutivas del elemento x.
 apariciones :: [a] -> [(Int,a)]
-apariciones = error "solo es para que compile"
+apariciones = error "solo es para Que compile"
 
 --listas por comprencion
 lista1 = [x-1 | x <- [2^y | y <- [0..6]]]
+--Regresa: [0,1,3,7,15,31,63]
 lista2 = zip [(x*4)-1 | x <- [1..]] [x*4 | x <- [1..]]
+--Regresa: [(3,4),(7,8),(11,12),(15,16),...]
 
 ----------------------------------------------------------------------------------
---FUNCIONES
+--                         FUNCIONES AUXILIARES                                 --
 ----------------------------------------------------------------------------------
+
 --Función auxiliar que calcula un número de tribonacci.
 fi :: Int -> Int
 fi 0 = 0
@@ -97,13 +104,16 @@ fi 1 = 1
 fi 2 = 1
 fi n = (fi(n-1))+(fi(n-2))+(fi(n-3))
 
---prueba
+----------------------------------------------------------------------------------
+--                                 PRUEBAS                                      --
+----------------------------------------------------------------------------------
+
 deriva1 = deriva 4 10 20 5
 --Resultado: 50
 deriva2 = deriva 2 3 4 2
 --Resultado: 11
 areaCilindro1 = areaCilindro 10 20
---Resultado: 1884.95
+--Resultado: 1884.96
 areaCilindro2 = areaCilindro 8 6
 --Resultado: 703.71
 volumenCilindro1 = volumenCilindro 10 7
@@ -124,6 +134,10 @@ aplicaOperacionD = aplicaOperacion 'd' 8 3
 --Resultado: 2
 aplicaOperacionE = aplicaOperacion 'e' 2 3
 --Resultado: 8
+raizEntera1 = raizEntera 4
+--Resultado: 2
+raizEntera2 = raizEntera 110
+--Resultado: 10
 sumaNat1 = sumaNat 15
 --Resultado: 120
 sumaNat2 = sumaNat 19456
@@ -132,7 +146,19 @@ tribonaccies1 = tribonaccies 4
 --Resultado: [0,1,1,2,4]
 tribonaccies2 = tribonaccies 17
 --Resultado: [0,1,1,2,4,7,13,24,44,81,149,274,504,927,1705,3136,5768,10609]
+--eliminaDup1
+--Resultado:
+--eliminaDup2
+--Resultado:
 reversa1 = reversa [0,1,2,3,4,5,6,7,8,9]
 --Resultado: [9,8,7,6,5,4,3,2,1,0]
 reversa2 = reversa ["a","b","c","d","e"]
 --Resultado: ["e","d","c","b","a"]
+--filtra1
+--Resultado:
+--filtra2
+--Resultado:
+--apariciones1
+--Resultado:
+--apariciones2
+--Resultado:
