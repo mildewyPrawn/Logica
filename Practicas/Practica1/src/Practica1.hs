@@ -6,7 +6,7 @@
 --alumno: Galeana Araujo Emiliano
 --alumno: Verdugo Rodriguez Jesus Daniel
 --No de Cuenta: 314032324
---No de Cuenta: 417
+--No de Cuenta: 417092056
 
 module Practica1 where
 
