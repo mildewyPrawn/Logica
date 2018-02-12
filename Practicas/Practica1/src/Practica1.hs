@@ -1,4 +1,3 @@
-
 --Logica Computacional
 --profesor: Pilar Selene Linares Arevalo
 --ayudante: Alejandro Hernandez Mora
@@ -78,19 +77,15 @@ reversa (x:xs) = reversa(xs) ++ [x]
 --recibe una lista y devuelve los elementos de la lista que cumplen el predicado recibido
 filtra :: (a -> Bool) -> [a] -> [a]
 filtra = error "error"
---filtra x:xs = x
+
 --recibe una lista y devuelve una lista con pares ordenados (k,x), donde k es el maximo numero de apariciones
 --consecutivas del elemento x.
 apariciones :: [a] -> [(Int,a)]
 apariciones = error "solo es para que compile"
 
 --listas por comprencion
---here
---here
---here
---here
-
-
+lista1 = [x-1 | x <- [2^y | y <- [0..6]]]
+lista2 = zip [(x*4)-1 | x <- [1..]] [x*4 | x <- [1..]]
 
 ----------------------------------------------------------------------------------
 --FUNCIONES
@@ -102,13 +97,42 @@ fi 1 = 1
 fi 2 = 1
 fi n = (fi(n-1))+(fi(n-2))+(fi(n-3))
 
-
---pruebas o cosas para probar el programa
---p
---p
-
---p
-
---p
-
---p
+--prueba
+deriva1 = deriva 4 10 20 5
+--Resultado: 50
+deriva2 = deriva 2 3 4 2
+--Resultado: 11
+areaCilindro1 = areaCilindro 10 20
+--Resultado: 1884.95
+areaCilindro2 = areaCilindro 8 6
+--Resultado: 703.71
+volumenCilindro1 = volumenCilindro 10 7
+--Resultado: 2199.11
+volumenCilindro2 = volumenCilindro 2 44
+--Resultado: 552.91
+aplicaOperacionS = aplicaOperacion 's' 32 0
+--Resultado: 32
+aplicaOperacionT = aplicaOperacion 't' 0 23
+--Resultado: 23
+aplicaOperacionA = aplicaOperacion 'a' 10 10
+--Resultado: 20
+aplicaOperacionR = aplicaOperacion 'r' 15 20
+--Resultado: -5
+aplicaOperacionP = aplicaOperacion 'p' 4 3
+--Resultado: 12
+aplicaOperacionD = aplicaOperacion 'd' 8 3
+--Resultado: 2
+aplicaOperacionE = aplicaOperacion 'e' 2 3
+--Resultado: 8
+sumaNat1 = sumaNat 15
+--Resultado: 120
+sumaNat2 = sumaNat 19456
+--Resultado: 189277696
+tribonaccies1 = tribonaccies 4
+--Resultado: [0,1,1,2,4]
+tribonaccies2 = tribonaccies 17
+--Resultado: [0,1,1,2,4,7,13,24,44,81,149,274,504,927,1705,3136,5768,10609]
+reversa1 = reversa [0,1,2,3,4,5,6,7,8,9]
+--Resultado: [9,8,7,6,5,4,3,2,1,0]
+reversa2 = reversa ["a","b","c","d","e"]
+--Resultado: ["e","d","c","b","a"]
