@@ -1,12 +1,14 @@
-module Practica1 where
 
 --Logica Computacional
 --profesor: Pilar Selene Linares Arevalo
 --ayudante: Alejandro Hernandez Mora
 --ayudante: Luis Manuel Martinez Damaso
 --Practica1
+--alumno: Galeana Araujo Emiliano
 --alumno: Verdugo Rodriguez Jesus Daniel
 --No de Cuenta:
+
+module Practica1 where
 
 --Funcion que recibe cuatro enteros y calcula la derivada de la funcion f(x) =ax^2 + bx + c
 --el primer elemento corresponde a a, el segundo a b, el tercero a c yel cuarto a x
