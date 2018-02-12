@@ -22,7 +22,6 @@ areaCilindro a b = 2*3.1416*a*(a+b)
 
 --Volumen del cilindro
 volumenCilindro :: Float -> Float -> Float
---volumenCilindro a b = 2*3.1416*a*a*b
 volumenCilindro a b = 3.1416*a*a*b
 
 --funcion que recibe tres parametros, el primero indica la operacion que se desea realizar,
@@ -62,7 +61,14 @@ tribonaccies n = map fi [0..n]
 --tribonaccies = error "solo es para que compile"
 --recibe una lista y elimina los duplicados adyacentes de la lista, dejando una presencia de cada elemento
 eliminaDup :: [a] -> [a]
-eliminaDup (x:xs) = error "Igual es solo para que compile"
+--eliminaDup (x:xs) = error "Igual es solo para que compile"
+eliminaDup [] = []
+eliminaDup (x:xs) = eliminaAux x xs
+
+eliminaAux y [] = [y]
+eliminaAux y (x:xs) = if (y == x)
+                    then [y]++eliminaAux y xs
+                    else [y]++[x]++eliminaAux x xs
 
 prueba = rep [4,1,1,1,1,23,23,23,4]
 
@@ -72,6 +78,7 @@ rep [] = []
 rep (x:y:xs) = if(x == y)
                       then rep (y:xs)
                       else [x] ++ rep (y:xs)
+
 --operaciones con listas
 --funcion que recibe una lista y devuelve la misma pero en el orden inverso
 reversa :: [a] -> [a]
