@@ -162,10 +162,10 @@ reversa1 = reversa [0,1,2,3,4,5,6,7,8,9]
 --Resultado: [9,8,7,6,5,4,3,2,1,0]
 reversa2 = reversa ["a","b","c","d","e"]
 --Resultado: ["e","d","c","b","a"]
---filtra1
---Resultado:
---filtra2
---Resultado:
+filtra1 = filtra (<5) [1,2,3,4,5,6,7,8,9,0]
+--Resultado: [1,2,3,4,0']
+filtra2 = filtra (/="a") ["a","b","a","c","a","d","e"]
+--Resultado: ["b","c","d","e"]
 --apariciones1
 --Resultado:
 --apariciones2
