@@ -46,7 +46,7 @@ aplicaOperacion z x y
 
 --Función que reciba un entero y devuelva la proxima entrada a su raiz cuadrada
 raizEntera :: Int -> Int
-raizEntera x = round (sqrt (realToFrac x))
+raizEntera n = auxRaizEntera n 1
 
 --Función que recibe un entero n y devuelve la suma de los primeros n numeros naturales
 sumaNat :: Int -> Int
@@ -111,6 +111,12 @@ rep (x:xs) = if((length (x:xs)) > 1)
                          then rep xs
                          else [x] ++ rep xs
                     else [x]
+
+--Función que ayuda a calcular la aproximación de una raíz cuadrada.
+auxRaizEntera :: Int -> Int -> Int
+auxRaizEntera r n = if n*n > r
+                    then n-1
+                    else auxRaizEntera r (n+1)
 
 ----------------------------------------------------------------------------------
 --                                 PRUEBAS                                      --
