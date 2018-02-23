@@ -111,7 +111,7 @@ auxRaizEntera :: Int -> Int -> Int
 auxRaizEntera r n = if n*n > r
                     then n-1
                     else auxRaizEntera r (n+1)
-
+cuentaMax :: (Eq a) => Int -> a -> [a] -> Int
 cuentaMax n e [] = n
 cuentaMax n e (x:xs) = if e == x
                        then cuentaMax (n+1) e xs
@@ -119,6 +119,11 @@ cuentaMax n e (x:xs) = if e == x
                             then n
                             else cuentaMax 0 e (findNext e xs)
 
+findNext :: (Eq a) => a -> [a] -> [a]
+findNext e [] = []
+findNext e (x:xs) = if x == e
+                then x:xs
+                else xs
 
 ----------------------------------------------------------------------------------
 --                                 PRUEBAS                                      --
