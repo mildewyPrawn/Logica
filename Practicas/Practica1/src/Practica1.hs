@@ -80,7 +80,6 @@ filtra p xs = [x | x <- xs, p x]
 --consecutivas del elemento x.
 apariciones :: [a] -> [(Int,a)]
 apariciones [] = []
---apariciones = error "solo es para Que compile"
 
 --listas por comprencion
 lista1 = [x-1 | x <- [2^y | y <- [0..6]]]
@@ -105,15 +104,6 @@ eliminaAux y [] = [y]
 eliminaAux y (x:xs) = if (y == x)
                       then eliminaAux y xs 
                       else [y] ++ eliminaAux x xs
-
---Función que elimina los duplicados adyacentes de una lista, empezando por la cabeza.
-rep :: (Eq a) => [a] -> [a]
-rep [] = []
-rep (x:xs) = if((length (x:xs)) > 1)
-                    then if(x == xs !! 0)
-                         then rep xs
-                         else [x] ++ rep xs
-                    else [x]
 
 --Función que ayuda a calcular la aproximación de una raíz cuadrada.
 auxRaizEntera :: Int -> Int -> Int
