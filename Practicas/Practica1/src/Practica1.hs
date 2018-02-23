@@ -80,7 +80,7 @@ filtra p xs = [x | x <- xs, p x]
 --consecutivas del elemento x.
 apariciones :: (Eq a) => [a] -> [(Int,a)]
 apariciones [] = []
-apariciones (x:xs) = [(cuentaMax 0 x (x:xs),x)] ++ apariciones(xs) -- ++ apariciones xs-- ++ apariciones(findOther x (x:xs))
+apariciones (x:xs) = [(cuentaMax 0 x (x:xs),x)] ++ apariciones(findOther x (x:xs))
 
 --listas por comprencion
 lista1 = [x-1 | x <- [2^y | y <- [0..6]]]
@@ -124,6 +124,11 @@ findNext e [] = []
 findNext e (x:xs) = if x == e
                 then x:xs
                 else xs
+findOther :: (Eq a) => a -> [a] -> [a]
+findOther y [] = []
+findOther y (x:xs) = if x == y
+                     then findOther y xs
+                     else x:xs
 
 ----------------------------------------------------------------------------------
 --                                 PRUEBAS                                      --
