@@ -78,8 +78,9 @@ filtra p xs = [x | x <- xs, p x]
 
 --recibe una lista y devuelve una lista con pares ordenados (k,x), donde k es el maximo numero de apariciones
 --consecutivas del elemento x.
-apariciones :: [a] -> [(Int,a)]
+apariciones :: (Eq a) => [a] -> [(Int,a)]
 apariciones [] = []
+apariciones (x:xs) = [(cuentaMax 0 x (x:xs),x)] ++ apariciones(xs) -- ++ apariciones xs-- ++ apariciones(findOther x (x:xs))
 
 --listas por comprencion
 lista1 = [x-1 | x <- [2^y | y <- [0..6]]]
@@ -110,6 +111,14 @@ auxRaizEntera :: Int -> Int -> Int
 auxRaizEntera r n = if n*n > r
                     then n-1
                     else auxRaizEntera r (n+1)
+
+cuentaMax n e [] = n
+cuentaMax n e (x:xs) = if e == x
+                       then cuentaMax (n+1) e xs
+                       else if n > cuentaMax 0 e (findNext e xs)
+                            then n
+                            else cuentaMax 0 e (findNext e xs)
+
 
 ----------------------------------------------------------------------------------
 --                                 PRUEBAS                                      --
