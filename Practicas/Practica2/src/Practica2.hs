@@ -2,11 +2,13 @@
 --profesor: Pilar Selene Linares Arevalo
 --ayudante: Alejandro Hernandez Mora
 --ayudante: Luis Manuel Martinez Damaso
---Practica1
+--Practica2
 --alumno: Galeana Araujo Emiliano
---alumno: Verdugo Rodriguez Jesus Daniel
 --No de Cuenta: 314032324
+--alumno: Verdugo Rodriguez Jesus Daniel
 --No de Cuenta: 417092056
+--alumno: Ángeles Martínez Ángela Janín
+--No de Cuenta: 314201009
 
 module Practica2 where
 --declaracion de los tipo?
