@@ -54,11 +54,11 @@ negacion (p :<=>: q) =(p :&: (negacion q)) :|: (q :&: (negacion p))
 equivalencia :: Formula -> Formula
 equivalencia (Prop p) = (Prop p)
 equivalencia (Neg p) = (negacion (equivalencia p))
-equivalencia (p :&: q) = (equivalencia p) :&: (equivalencia q)
-equivalencia (p :|: q) = (equivalencia p) :|: (equivalencia q)
-equivalencia (p :=>: q) = (negacion (equivalencia p)) :|: (equivalencia q)
-equivalencia (p :<=>: q) = ((negacion(equivalencia p)) :|: (equivalencia q))
-                           :&: ((negacion(equivalencia q)) :|: (equivalencia p))
+equivalencia (p :&: q) = ((equivalencia p) :&: (equivalencia q))
+equivalencia (p :|: q) = ((equivalencia p) :|: (equivalencia q))
+equivalencia (p :=>: q) = ((negacion (equivalencia p)) :|: (equivalencia q))
+equivalencia (p :<=>: q) = (((negacion(equivalencia p)) :|: (equivalencia q))
+                           :&: ((negacion(equivalencia q)) :|: (equivalencia p)))
 
 --Una función recursiva que recibe una fórmula proposicional y una lista de
 -- parejas de variables proposicionales. La función debe sustituir todas las
@@ -82,10 +82,11 @@ interp = error "solo es para que interprete"
 fnn :: Formula -> Formula
 fnn (Prop p) = Prop p
 fnn (Neg p) = negacion (fnn (p))
-fnn (p :&: q) = (fnn p :&: fnn q)
-fnn (p :|: q) = fnn p :|: fnn q
-fnn (p :=>: q) = negacion (fnn p) :|: fnn q
-fnn (p :<=>: q) =(negacion p :|: q) :&: (negacion q :|: p) 
+fnn (p :&: q) = ((fnn p) :&: (fnn q))
+fnn (p :|: q) = ((fnn p) :|: (fnn q))
+fnn (p :=>: q) = ((negacion (fnn p)) :|: (fnn q))
+fnn (p :<=>: q) = (((negacion (fnn p)) :|: (fnn q))
+                   :&: ((negacion (fnn q)) :|: (fnn p)))
 
 --Función recursiva que permite expresar cualquier fórmula proposicional como
 -- una conjunción de disyunciones llamadas 'clausulas'.
@@ -108,3 +109,10 @@ repeticiones [] = []
 repeticiones (x:xs) = if(elem x xs == True)
                       then repeticiones xs
                       else [x] ++ repeticiones xs
+
+----------------------------------------------------------------------
+--                             PRUEBAS                             --
+----------------------------------------------------------------------
+
+
+
