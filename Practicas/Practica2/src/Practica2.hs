@@ -81,7 +81,7 @@ interp = error "solo es para que interprete"
 -- presencias de conectivo de implicación, ni equivalencia.
 fnn :: Formula -> Formula
 fnn (Prop p) = Prop p
-fnn (Neg p) = negacion (fnn (p))
+fnn (Neg p) = (negacion (fnn (p)))
 fnn (p :&: q) = ((fnn p) :&: (fnn q))
 fnn (p :|: q) = ((fnn p) :|: (fnn q))
 fnn (p :=>: q) = ((negacion (fnn p)) :|: (fnn q))
@@ -114,5 +114,38 @@ repeticiones (x:xs) = if(elem x xs == True)
 --                             PRUEBAS                             --
 ----------------------------------------------------------------------
 
-
-
+varList1 =  varList (Prop P :=>: Neg (Prop Q :<=>: Prop W :&: Neg (Prop P)))
+--Resultado: [Q,W,P]
+varList2 = varList (Prop Q :&: Prop R :=>: (Prop R :|: Prop S) :=>: Prop T)
+--Resultado: [Q,R,S,T]
+negacion1 = negacion (Prop Q :<=>: Prop W :&: Neg (Prop P))
+--Resultado: (Prop Q :&: (Neg (Prop W) :|: Prop P))
+--             :|: ((Prop W :&: Neg (Prop P)) :&: Neg (Prop Q))
+negacion2 = negacion (negacion1)
+--Resultado: (Neg (Prop Q) :|: (Prop W :&: Neg (Prop P)))
+--             :&: ((Neg (Prop W) :|: Prop P) :|: Prop Q)
+equivalencia1 = equivalencia (Neg (Neg (Neg (Prop P :<=>: Prop Q))))
+--Resultado: (Prop P :&: Neg (Prop Q)) :|: (Prop Q :&: Neg (Prop P))
+equivalencia2 = equivalencia ((Prop R :=>: Prop S):<=>:(Prop P :=>: Prop Q))
+--Resultado: ((Prop R :&: Neg (Prop S)) :|: (Neg (Prop P) :|: Prop Q))
+--            :&: ((Prop P :&: Neg (Prop Q)) :|: (Neg (Prop R) :|: Prop S))
+sustituye1 = sustituye (Prop P :=>: Prop Q :&: Neg (Prop R)) [(P,A),(Q,R),(O,U)]
+--Resultado: Prop A :=>: Prop R :&: Neg (Prop R)
+sustituye2 = sustituye((Prop R :=>: Prop S):<=>:(Prop P :=>: Prop Q))
+  [(R,P),(S,Q),(T,U),(U,V)]
+--Resultado:
+interp1 = interp (Prop P :=>: Prop Q :&: Neg (Prop R)) [(Q,True), (P,False)]
+--Resultado: True
+interp2 = interp (Prop P :=>: Prop Q :&: Neg (Prop R)) [(Q,True), (P,True)]
+--Resultado: Program error: No todas las variables estan definidas
+interp3 = interp (Prop P :=>: Prop Q :&: Neg (Prop R)) [(Q,True), (P,True), (R,True)]
+--Resultado: False
+fnn1 = fnn(Neg (Prop Q :&: Prop R))
+--Resultado: Neg (Prop Q) :|: Neg (Prop R)
+fnn2 = fnn (Prop P :&: (Prop Q :=>: Prop R) :=>: Prop S)
+--Resultado: ((Neg (Prop P) :|: (Prop Q :&: Neg (Prop R))) :|: Prop S)
+fnc1 = fnc(Neg (Prop Q :&: Prop R))
+--Resultado: Neg (Prop Q) :|: Neg (Prop R)
+fnc2 = fnc(Neg ((Prop R) :|: (Prop S)) :<=>: (Prop P))
+--Resultado: ((Prop R):|:(Prop S):|:(Prop P)) :&: ((Neg Prop R):|:Neg(Prop P))
+--             :&: (Neg(Prop R):|:Neg(Prop P))
