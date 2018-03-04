@@ -115,9 +115,9 @@ cuentaMax :: (Eq a) => Int -> a -> [a] -> Int
 cuentaMax n e [] = n
 cuentaMax n e (x:xs) = if e == x
                        then cuentaMax (n+1) e xs
-                       else if n > cuentaMax 0 e (findNext e xs)
+                       else if n > cuentaMax 0 e (xs)
                             then n
-                            else cuentaMax 0 e (findNext e xs)
+                            else cuentaMax 0 e (xs)
 
 findNext :: (Eq a) => a -> [a] -> [a]
 findNext e [] = []
