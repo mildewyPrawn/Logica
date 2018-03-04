@@ -178,7 +178,8 @@ tribonaccies1 = tribonaccies 4
 --Resultado: [0,1,1,2,4]
 tribonaccies2 = tribonaccies 17
 --Resultado: [0,1,1,2,4,7,13,24,44,81,149,274,504,927,1705,3136,5768,10609]
-eliminaDup1 = eliminaDup [1,1,1,1,1,1,2,2,2,2,2,3,3,3,3,4,4,4,5,5,5,6,7,7,7,7,8,8,8,8,9,9,9,0,0,0]
+eliminaDup1 = eliminaDup [1,1,1,1,1,1,2,2,2,2,2,3,3,3,3,4,4,4,5,5,5,6,7,7
+                         ,7,7,8,8,8,8,9,9,9,0,0,0]
 --Resultado: [1,2,3,4,5,6,7,8,9,0]
 eliminaDup2 = eliminaDup [1,1,2,2,1,1,2,2,1,1,2,2,1,1,2,2,1,1,2,2]
 --Resultado: [1,2,1,2,1,2,1,2,1,2]
@@ -190,7 +191,8 @@ filtra1 = filtra (<5) [1,2,3,4,5,6,7,8,9,0]
 --Resultado: [1,2,3,4,0']
 filtra2 = filtra (/="a") ["a","b","a","c","a","d","e"]
 --Resultado: ["b","c","d","e"]
---apariciones1
---Resultado:
---apariciones2
---Resultado:
+apariciones1 = apariciones [1,1,1,2,2,3,1,1,1,1,5,5,2,2,2,2,2,6,3,3]
+--Resultado: [(4,1),(2,5),(5,2),(1,6),(2,3)]
+apariciones2 = apariciones ['a','a','a','b','b','c','a','a','a','a','e','e'
+                           ,'b','b','b','b','b','f','c','c']
+--Resultado: [(4,'a'),(2,'e'),(5,'b'),(1,'f'),(2,'c')]
