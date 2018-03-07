@@ -110,6 +110,15 @@ repeticiones (x:xs) = if(elem x xs == True)
                       then repeticiones xs
                       else [x] ++ repeticiones xs
 
+deMorganC :: Formula -> Formula
+deMorganC (Prop p) = (Prop p)
+deMorganC (Neg p) = (negacion (deMorganC p))
+deMorganC ((p :&: q) :|: r) = ((deMorganC(p) :|: deMorganC(r)) :&: (deMorganC(q) :|: deMorganC (r)))
+deMorganC (r :|: (p :&: q)) = deMorganC ((p :&: q) :|: r)
+deMorganC ((p :|: q) :&: r) = ((deMorganC(p) :&: deMorganC(r)) :|: (deMorganC(q) :&: deMorganC (r)))
+deMorganC (r :&: (p :|: q)) = deMorganC ((p :|: q) :&: r)
+deMorganC (p :=>: q) = (deMorganC p :=>: deMorganC q)
+deMorganC (p :<=>: q) = (deMorganC p :<=>: deMorganC q)
 ----------------------------------------------------------------------
 --                             PRUEBAS                             --
 ----------------------------------------------------------------------
