@@ -11,12 +11,11 @@
 --No de Cuenta: 314201009
 
 module Practica2 where
---declaracion de los tipo?
 
 data Var = A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z
          deriving (Show, Eq, Ord)
+
 data Formula = Prop Var
-             --Agregar V,F para True y False (?)
              |Neg Formula
              |Formula :&: Formula
              |Formula :|: Formula
@@ -109,8 +108,12 @@ fnn (p :<=>: q) = (((negacion (fnn p)) :|: (fnn q))
 --Función recursiva que permite expresar cualquier fórmula proposicional como
 -- una conjunción de disyunciones llamadas 'clausulas'.
 fnc :: Formula -> Formula
-fnc = error "error falta hacer"
-
+fnc (Prop p) = (Prop p)
+fnc (Neg p) = fnc((fnn(Neg p)))
+fnc (p :&: q) = fnc(fnn p) :&: fnc(fnn q)
+fnc (p :|: q) = distrN(distrN ((fnn p)) :|: distrN(fnn q))
+fnc (p :=>: q) = distrN(negacion(fnn p) :|: fnn q)
+fnc (p :<=>: q) = fnc(p :=>: q) :&: fnc(q :=>: p)
 
 ----------------------------------------------------------------------
 --                        FUNCIONES AUXILIARES                      --
@@ -122,10 +125,12 @@ repeticiones (x:xs) = if(elem x xs == True)
                       then repeticiones xs
                       else [x] ++ repeticiones xs
 
---distr :: Formula -> Formula -> Formula
-distr :: Formula -> Formula -> Formula
-distr = error"funcion auxiliar"
-
+distrN :: Formula -> Formula
+distrN ((r :&: s) :|: q) = distrN(q :|: r) :&: distrN(q :|: s)
+distrN (q :|: (r :&: s)) = distrN(q :|: r) :&: distrN(q :|: s)
+distrN (p :|: q) = p :|: q
+distrN (Neg(Prop p)) = Neg(Prop p)
+distrN (Prop p) = Prop p
 
 ----------------------------------------------------------------------
 --                             PRUEBAS                             --
@@ -164,5 +169,5 @@ fnn2 = fnn (Prop P :&: (Prop Q :=>: Prop R) :=>: Prop S)
 fnc1 = fnc(Neg (Prop Q :&: Prop R))
 --Resultado: Neg (Prop Q) :|: Neg (Prop R)
 fnc2 = fnc(Neg ((Prop R) :|: (Prop S)) :<=>: (Prop P))
---Resultado: ((Prop R):|:(Prop S):|:(Prop P)) :&: ((Neg Prop R):|:Neg(Prop P))
---             :&: (Neg(Prop R):|:Neg(Prop P))
+--Resultado: ((Prop R :|: Prop S) :|: Prop P) :&: ((Neg (Prop P) :|: Neg (Prop R))
+--       :&: (Neg (Prop P) :|: Neg (Prop S)))
