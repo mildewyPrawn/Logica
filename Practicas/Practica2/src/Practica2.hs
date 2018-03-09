@@ -110,12 +110,12 @@ fnn (p :<=>: q) = (((negacion (fnn p)) :|: (fnn q))
 -- una conjunción de disyunciones llamadas 'clausulas'.
 fnc :: Formula -> Formula
 fnc (Prop p) = (Prop p)
-fnc (Neg p) = negacion (fnc (fnn p))
-fnc (p :&: q) = (fnc (fnn p) :&: fnc (fnn q))
+--fnc (Neg p) = negacion (fnc (fnn p))
+--fnc (p :&: q) = (fnc (fnn p) :&: fnc (fnn q))
 --fnc (p :|: q) = fnc (fnn p) :|: fnc (fnn q)
-fnc (p :|: q) = distr(fnc(fnn(p)) fnc(fnn(q)))
-fnc (p :=>: q) = fnc(fnn(equivalencia p :=>: q))
-fnc (p :<=>: q) = fnc(fnn(equivalencia p :<=>: q))
+--fnc (p :|: q) = distr(fnc(fnn(p)) fnc(fnn(q)))
+--fnc (p :=>: q) = fnc(fnn(equivalencia p :=>: q))
+--fnc (p :<=>: q) = fnc(fnn(equivalencia p :<=>: q))
 
 --fnc = error "esto solo es para que interprete"
 
@@ -132,8 +132,9 @@ repeticiones (x:xs) = if(elem x xs == True)
 distr :: Formula -> Formula -> Formula
 distr (Prop p) (Prop q) = (Prop p) :|: ( Prop q)
 
-
+{-
 --EJEMPLO: deMorganC ((Prop P :&: Prop Q) :|: Prop R)
+
 deMorganC :: Formula -> Formula
 deMorganC (Prop p) = (Prop p)
 deMorganC (Neg p) = (negacion (deMorganC p))
@@ -143,7 +144,7 @@ deMorganC ((p :|: q) :&: r) = ((deMorganC(p) :&: deMorganC(r)) :|: (deMorganC(q)
 deMorganC (r :&: (p :|: q)) = deMorganC ((p :|: q) :&: r)
 deMorganC (p :=>: q) = (deMorganC p :=>: deMorganC q)
 deMorganC (p :<=>: q) = (deMorganC p :<=>: deMorganC q)
-
+--}
 ----------------------------------------------------------------------
 --                             PRUEBAS                             --
 ----------------------------------------------------------------------
