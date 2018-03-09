@@ -81,7 +81,7 @@ sustituye (p :<=>: q) l1 = (sustituye p l1) :<=>: (sustituye q l1)
 -- tenga estado asignado y sea necesaria para calcular el valor de la
 -- proposición, muestra el error: “No todas las variables están definidas"
 interp :: Formula -> [(Var,Bool)] -> Bool
-interp (Prop p) [] = error "ERROR:  Lista vacía D:"
+interp _ [] = error "ERROR:  Lista vacía D:"
 interp (Prop p) ((x,y):xs) = if varList(Prop p) == fst ([x],y)
                             then (snd(x,y))
                             else interp (Prop p) xs
@@ -94,7 +94,7 @@ interp (p :<=>: q) l1 = (not(interp p l1 || interp q l1))
 
 
 --Una función que recibe una fórmula y devuelve la fórmula en Forma normal
--- negativa. Decimos que una fórmula ψ está en forma normal negativa si y sólo
+  -- negativa. Decimos que una fórmula ψ está en forma normal negativa si y sólo
 -- si en ψ las negaciones quedan únicamente frente a fórmulas atómicas y no hay
 -- presencias de conectivo de implicación, ni equivalencia.
 fnn :: Formula -> Formula
@@ -109,15 +109,8 @@ fnn (p :<=>: q) = (((negacion (fnn p)) :|: (fnn q))
 --Función recursiva que permite expresar cualquier fórmula proposicional como
 -- una conjunción de disyunciones llamadas 'clausulas'.
 fnc :: Formula -> Formula
-fnc (Prop p) = (Prop p)
-fnc (Neg p) = negacion (fnc (fnn p))
-fnc (p :&: q) = (fnc (fnn p) :&: fnc (fnn q))
---fnc (p :|: q) = fnc (fnn p) :|: fnc (fnn q)
-fnc (p :|: q) = distr(fnc(fnn(p)) fnc(fnn(q)))
-fnc (p :=>: q) = fnc(fnn(equivalencia p :=>: q))
-fnc (p :<=>: q) = fnc(fnn(equivalencia p :<=>: q))
+fnc = error "error falta hacer"
 
---fnc = error "esto solo es para que interprete"
 
 ----------------------------------------------------------------------
 --                        FUNCIONES AUXILIARES                      --
@@ -129,20 +122,10 @@ repeticiones (x:xs) = if(elem x xs == True)
                       then repeticiones xs
                       else [x] ++ repeticiones xs
 
+--distr :: Formula -> Formula -> Formula
 distr :: Formula -> Formula -> Formula
-distr (Prop p) (Prop q) = (Prop p) :|: ( Prop q)
+distr = error"funcion auxiliar"
 
-
---EJEMPLO: deMorganC ((Prop P :&: Prop Q) :|: Prop R)
-deMorganC :: Formula -> Formula
-deMorganC (Prop p) = (Prop p)
-deMorganC (Neg p) = (negacion (deMorganC p))
-deMorganC ((p :&: q) :|: r) = ((deMorganC(p) :|: deMorganC(r)) :&: (deMorganC(q) :|: deMorganC (r)))
-deMorganC (r :|: (p :&: q)) = deMorganC ((p :&: q) :|: r)
-deMorganC ((p :|: q) :&: r) = ((deMorganC(p) :&: deMorganC(r)) :|: (deMorganC(q) :&: deMorganC (r)))
-deMorganC (r :&: (p :|: q)) = deMorganC ((p :|: q) :&: r)
-deMorganC (p :=>: q) = (deMorganC p :=>: deMorganC q)
-deMorganC (p :<=>: q) = (deMorganC p :<=>: deMorganC q)
 
 ----------------------------------------------------------------------
 --                             PRUEBAS                             --
