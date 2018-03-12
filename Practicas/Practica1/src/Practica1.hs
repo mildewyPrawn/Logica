@@ -92,7 +92,7 @@ lista2 = zip [(x*4)-1 | x <- [1..]] [x*4 | x <- [1..]]
 --                         FUNCIONES AUXILIARES                                 --
 ----------------------------------------------------------------------------------
 
---Función auxiliar que calcula un número de tribonacci.
+--Función auxiliar que calcula un npúmero de tribonacci.
 fi :: Int -> Int
 fi 0 = 0
 fi 1 = 1
