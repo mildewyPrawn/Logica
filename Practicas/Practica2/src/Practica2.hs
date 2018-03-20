@@ -115,7 +115,6 @@ fnc (p :|: q) = distrN(distrN ((fnn p)) :|: distrN(fnn q))
 fnc (p :=>: q) = distrN(negacion(fnn p) :|: fnn q)
 --fnc (p :=>: q) = fnc(negacion(fnn p) :|: fnn q)
 fnc (p :<=>: q) = fnc(p :=>: q) :&: fnc(q :=>: p)
-
 ----------------------------------------------------------------------
 --                        FUNCIONES AUXILIARES                      --
 ----------------------------------------------------------------------
