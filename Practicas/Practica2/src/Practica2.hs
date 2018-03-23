@@ -88,9 +88,7 @@ interp (Neg p) l1 = not (interp p l1)
 interp (p :&: q) l1 = (interp p l1) && (interp q l1)
 interp (p :|: q) l1 = (interp p l1) || (interp q l1)
 interp (p :=>: q) l1 = not(interp p l1) || (interp q l1)
-interp (p :<=>: q) l1 = (not(interp p l1 || interp q l1))
-                        && (not(interp q l1 || interp p l1))
-
+interp (p :<=>: q) l1 = interp (p :=>: q) l1 && interp (q :=>: p) l1
 
 --Una función que recibe una fórmula y devuelve la fórmula en Forma normal
   -- negativa. Decimos que una fórmula ψ está en forma normal negativa si y sólo
