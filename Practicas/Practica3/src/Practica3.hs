@@ -10,7 +10,7 @@
 --alumno: Ángeles Martínez Ángela Janín
 --No de Cuenta: 314201009
 
-module Practica2 where
+module Practica3 where
 
 data Var = A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z
          deriving (Show, Eq, Ord)
@@ -111,7 +111,6 @@ fnc (Neg p) = fnc((fnn(Neg p)))
 fnc (p :&: q) = fnc(fnn p) :&: fnc(fnn q)
 fnc (p :|: q) = distrN(distrN ((fnn p)) :|: distrN(fnn q))
 fnc (p :=>: q) = distrN(negacion(fnn p) :|: fnn q)
---fnc (p :=>: q) = fnc(negacion(fnn p) :|: fnn q)
 fnc (p :<=>: q) = fnc(p :=>: q) :&: fnc(q :=>: p)
 
 --Función que recibe una fórmula y el resultado es una lista de 2^n pares ordenados.
@@ -154,19 +153,36 @@ esCorrecto :: [Formula] -> Formula -> Bool
 esCorrecto = error "Es para que corra"
 
 ----------------------------------------------------------------------
+--                          LISTAS AUXILIARES                       --
+----------------------------------------------------------------------
+
+-- Lista de variables posibles.
+tf = [True, False]
+
+-- Formula que es Tautologia.
+tautologia = (Prop P :&: Prop Q :=>: Prop P)
+
+-- Formula que es Contradicción
+contradiccion = ((Prop P :=>: Prop Q) :&: (Prop P :&: Neg (Prop Q)))
+
+-- Formula que es Contingencia (Es satisfacible).
+satisfacible = (Prop P :|: (Prop Q :=>: Prop R))
+
+----------------------------------------------------------------------
 --                        FUNCIONES AUXILIARES                      --
 ----------------------------------------------------------------------
 
-tf = [True, False]
-
+-- Función auxiliar que regresa las evaluaciones en todos los estados de la formula.
 auxTV1 f = map (interp f) (map(pegar (varList f)) (renglones (length(varList f)) [[]]))
 
+-- Función que elimna las repeticiones de una lista. Regresa la lista 'canónica'.
 repeticiones :: (Eq a) => [a] -> [a]
 repeticiones [] = []
 repeticiones (x:xs) = if(elem x xs == True)
                       then repeticiones xs
                       else [x] ++ repeticiones xs
 
+-- Función auxiliar que distribuye una fórmula en otra. Supomenos que está en FNN.
 distrN :: Formula -> Formula
 distrN ((r :&: s) :|: q) = distrN(q :|: r) :&: distrN(q :|: s)
 distrN (q :|: (r :&: s)) = distrN(q :|: r) :&: distrN(q :|: s)
@@ -174,10 +190,12 @@ distrN (p :|: q) = p :|: q
 distrN (Neg(Prop p)) = Neg(Prop p)
 distrN (Prop p) = Prop p
 
+-- Función auxiliar que regresa 2^n renglones de una tabla de verdad.
 renglones :: Int -> [[Bool]] -> [[Bool]]
 renglones 0 ac = ac
 renglones n l = renglones (n-1) [(x:y) | x <- tf, y <- l]
 
+-- Función auxiliar que pega dos listas.
 pegar [] _ = []
 pegar (x:xs) (y:ys) = (x,y):(pegar xs ys)
 
@@ -186,3 +204,71 @@ pegar (x:xs) (y:ys) = (x,y):(pegar xs ys)
 ----------------------------------------------------------------------
 --                             PRUEBAS                             --
 ----------------------------------------------------------------------
+
+varList1 =  varList (Prop P :=>: Neg (Prop Q :<=>: Prop W :&: Neg (Prop P)))
+--Resultado: [Q,W,P]
+varList2 = varList (Prop Q :&: Prop R :=>: (Prop R :|: Prop S) :=>: Prop T)
+--Resultado: [Q,R,S,T]
+negacion1 = negacion (Prop Q :<=>: Prop W :&: Neg (Prop P))
+--Resultado: (Prop Q :&: (Neg (Prop W) :|: Prop P))
+--             :|: ((Prop W :&: Neg (Prop P)) :&: Neg (Prop Q))
+negacion2 = negacion (negacion1)
+--Resultado: (Neg (Prop Q) :|: (Prop W :&: Neg (Prop P)))
+--             :&: ((Neg (Prop W) :|: Prop P) :|: Prop Q)
+equivalencia1 = equivalencia (Neg (Neg (Neg (Prop P :<=>: Prop Q))))
+--Resultado: (Prop P :&: Neg (Prop Q)) :|: (Prop Q :&: Neg (Prop P))
+equivalencia2 = equivalencia ((Prop R :=>: Prop S):<=>:(Prop P :=>: Prop Q))
+--Resultado: ((Prop R :&: Neg (Prop S)) :|: (Neg (Prop P) :|: Prop Q))
+--            :&: ((Prop P :&: Neg (Prop Q)) :|: (Neg (Prop R) :|: Prop S))
+sustituye1 = sustituye (Prop P :=>: Prop Q :&: Neg (Prop R)) [(P,A),(Q,R),(O,U)]
+--Resultado: Prop A :=>: Prop R :&: Neg (Prop R)
+sustituye2 = sustituye((Prop R :=>: Prop S):<=>:(Prop P :=>: Prop Q))
+  [(R,P),(S,Q),(T,U),(U,V)]
+--Resultado:
+interp1 = interp (Prop P :=>: Prop Q :&: Neg (Prop R)) [(Q,True), (P,False)]
+--Resultado: True
+interp2 = interp (Prop P :=>: Prop Q :&: Neg (Prop R)) [(Q,True), (P,True)]
+--Resultado: Program error: No todas las variables estan definidas
+interp3 = interp (Prop P :=>: Prop Q :&: Neg (Prop R)) [(Q,True), (P,True), (R,True)]
+--Resultado: False
+fnn1 = fnn(Neg (Prop Q :&: Prop R))
+--Resultado: Neg (Prop Q) :|: Neg (Prop R)
+fnn2 = fnn (Prop P :&: (Prop Q :=>: Prop R) :=>: Prop S)
+--Resultado: ((Neg (Prop P) :|: (Prop Q :&: Neg (Prop R))) :|: Prop S)
+fnc1 = fnc(Neg (Prop Q :&: Prop R))
+--Resultado: Neg (Prop Q) :|: Neg (Prop R)
+fnc2 = fnc(Neg ((Prop R) :|: (Prop S)) :<=>: (Prop P))
+--Resultado: ((Prop R :|: Prop S) :|: Prop P) :&: ((Neg (Prop P) :|: Neg (Prop R))
+--       :&: (Neg (Prop P) :|: Neg (Prop S)))
+tablaVerdad1 = tablaVerdad (Neg (Prop P))
+-- Resultado: [([(P,True)],False),([(P,False)],True)]
+tablaVerdad2 = tablaVerdad (Prop P :&: Prop Q)
+-- Resultado: [([(P,True),(Q,True)],True),([(P,True),(Q,False)],False),
+--               ([(P,False),(Q,True)],False),([(P,False),(Q,False)],False)]
+tablaVerdad3 = tablaVerdad (Prop P :|: Prop Q)
+-- Resultado: [([(P,True),(Q,True)],True),([(P,True),(Q,False)],True),
+--               ([(P,False),(Q,True)],True),([(P,False),(Q,False)],False)]
+tablaVerdad4 = tablaVerdad (Prop P :=>: Prop Q)
+-- Resultado: [([(P,True),(Q,True)],True),([(P,True),(Q,False)],False),
+--               ([(P,False),(Q,True)],True),([(P,False),(Q,False)],True)]
+tablaVerdad5 = tablaVerdad (Prop P :<=>: Prop Q)
+-- Resultado: [([(P,True),(Q,True)],True),([(P,True),(Q,False)],False),
+--               ([(P,False),(Q,True)],False),([(P,False),(Q,False)],True)]
+esTautologia1 = esTautologia tautologia
+-- Resultado: True
+esTautologia2 = esTautologia contradiccion
+-- Resultado: False
+esTautologia3 = esTautologia satisfacible
+-- Resultado: False
+esContradiccion1 = esContradiccion tautologia
+-- Resultado: False
+esContradiccion2 = esContradiccion contradiccion
+-- Resultado: True
+esContradiccion3 = esContradiccion satisfacible
+-- Resultado: False
+esSatisfacible1 = esSatisfacible tautologia
+-- Resultado: True
+esSatisfacible2 = esSatisfacible contradiccion
+-- Resultado: False
+esSatisfacible3 = esSatisfacible satisfacible
+-- Resultado: True
