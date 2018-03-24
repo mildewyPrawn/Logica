@@ -123,17 +123,17 @@ tablaVerdad f = pegar (map (pegar (varList f))(renglones (length(varList f)) [[]
 --Función que recibe una fórmula y devuelve 'True' si la fórmula es tautología.
 -- 'False' en otro caso. Utilizar la función 'tablaVerdad'.
 esTautologia :: Formula -> Bool
-esTautologia f = foldr (&&) True [x | (y,x) <- tablaVerdad f]
+esTautologia f = foldr (&&) True [x | (_,x) <- tablaVerdad f]
 
 --Función que recibe una fórmula y devuelve 'True' si la fórmula es contradicción.
 -- 'False' en otro caso. Utilizar la función 'tablaVerdad'.
 esContradiccion :: Formula -> Bool
-esContradiccion = error "Es para que corra"
+esContradiccion f = not (foldr (||) False [x | (_,x) <- tablaVerdad f])
 
 --Función que recibe una fórmula y devolve 'True' si la fórmula es satisfacible.
 -- 'False' en otro caso. Utilizar la función 'tablaVerdad'.
 esSatisfacible :: Formula -> Bool
-esSatisfacible = error "Es para que corra"
+esSatisfacible f = foldr (||) False [x | (_,x) <- tablaVerdad f]
 
 --Función que calcula el conjunto S de cláusulas de una fórmula.
 calculaS :: Formula -> [[Formula]]
