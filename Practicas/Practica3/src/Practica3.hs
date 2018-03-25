@@ -138,7 +138,7 @@ esSatisfacible f = foldr (||) False [x | (_,x) <- tablaVerdad f]
 calculaS :: Formula -> [[Formula]]
 calculaS = error "Es solo para que corra"
 
---Función que recibe dos cláusulas y devuelve el solvent de ambas.
+--Función que recibe dos cláusulas y devuelve el resolvente de ambas.
 res :: [Formula] -> [Formula] -> [Formula]
 res = error "Es para que corra"
 
@@ -198,8 +198,6 @@ renglones n l = renglones (n-1) [(x:y) | x <- tf, y <- l]
 -- Función auxiliar que pega dos listas.
 pegar [] _ = []
 pegar (x:xs) (y:ys) = (x,y):(pegar xs ys)
-
-
 
 ----------------------------------------------------------------------
 --                             PRUEBAS                             --
