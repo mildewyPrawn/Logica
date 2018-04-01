@@ -96,22 +96,17 @@ interp (p :<=>: q) l1 = interp (p :=>: q) l1 && interp (q :=>: p) l1
 -- presencias de conectivo de implicación, ni equivalencia.
 fnn :: Formula -> Formula
 fnn (Prop p) = Prop p
-fnn (Neg p) = (negacion (fnn (p)))
-fnn (p :&: q) = ((fnn p) :&: (fnn q))
-fnn (p :|: q) = ((fnn p) :|: (fnn q))
-fnn (p :=>: q) = ((negacion (fnn p)) :|: (fnn q))
-fnn (p :<=>: q) = (((negacion (fnn p)) :|: (fnn q))
-                   :&: ((negacion (fnn q)) :|: (fnn p)))
+fnn (Neg p) = negacion (fnn p)
+fnn (p :&: q) = fnn p :&: fnn q
+fnn (p :|: q) = fnn p :|: fnn q
+fnn (p :=>: q) = negacion (fnn p) :|: fnn q
+fnn (p :<=>: q) = (negacion (fnn p) :|: fnn q)
+                   :&: (negacion (fnn q) :|: fnn p)
 
 --Función recursiva que permite expresar cualquier fórmula proposicional como
 -- una conjunción de disyunciones llamadas 'clausulas'.
 fnc :: Formula -> Formula
-fnc (Prop p) = (Prop p)
-fnc (Neg p) = fnc((fnn(Neg p)))
-fnc (p :&: q) = fnc(fnn p) :&: fnc(fnn q)
-fnc (p :|: q) = distrN(distrN ((fnn p)) :|: distrN(fnn q))
-fnc (p :=>: q) = distrN(negacion(fnn p) :|: fnn q)
-fnc (p :<=>: q) = fnc(p :=>: q) :&: fnc(q :=>: p)
+fnc f = fncAux(fnn(f))
 
 --Función que recibe una fórmula y el resultado es una lista de 2^n pares ordenados.
 -- Donde el primer elemento es un estado para cada una de las variables y el segundo es el
@@ -136,7 +131,10 @@ esSatisfacible f = foldr (||) False [x | (_,x) <- tablaVerdad f]
 
 --Función que calcula el conjunto S de cláusulas de una fórmula.
 calculaS :: Formula -> [[Formula]]
-calculaS = error "Es solo para que corra"
+--calculaS f = map lista (calculaSAux(fnc f))
+calculaS f =
+  let cnf = fnc(f)
+  in map lista (calculaSAux(cnf))
 
 --Función que recibe dos cláusulas y devuelve el resolvente de ambas.
 res :: [Formula] -> [Formula] -> [Formula]
@@ -184,11 +182,17 @@ repeticiones (x:xs) = if(elem x xs == True)
 
 -- Función auxiliar que distribuye una fórmula en otra. Supomenos que está en FNN.
 distrN :: Formula -> Formula
-distrN ((r :&: s) :|: q) = distrN(q :|: r) :&: distrN(q :|: s)
-distrN (q :|: (r :&: s)) = distrN(q :|: r) :&: distrN(q :|: s)
-distrN (p :|: q) = p :|: q
-distrN (Neg(Prop p)) = Neg(Prop p)
-distrN (Prop p) = Prop p
+distrN ((r :&: s) :|: q) = distrN (r :|: q) :&: distrN (s :|: q)
+distrN (q :|: (r :&: s)) = distrN (q :|: r) :&: distrN (q :|: s)
+distrN (p :|: q) =  p :|: q
+
+-- Función 'auxliar' de fnc, esta supone que dada cualquier fórmula de la que se quiera
+-- la fnc ya está en 'fnn'
+fncAux :: Formula -> Formula
+fncAux (Prop p) = Prop p
+fncAux (Neg p) = negacion (fncAux p)
+fncAux (p :&: q) = fncAux p :&: fncAux q
+fncAux (p :|: q) = distrN (fncAux p :|: fncAux q)
 
 -- Función auxiliar que regresa 2^n renglones de una tabla de verdad.
 renglones :: Int -> [[Bool]] -> [[Bool]]
@@ -198,6 +202,14 @@ renglones n l = renglones (n-1) [(x:y) | x <- tf, y <- l]
 -- Función auxiliar que pega dos listas.
 pegar [] _ = []
 pegar (x:xs) (y:ys) = (x,y):(pegar xs ys)
+
+-- Función auxiliar que separa en listas una fórmula cada que hay un operador :&:
+calculaSAux (f :&: g) = (g:calculaSAux(f))
+calculaSAux f = f:[]
+
+-- Función auxiliar que separa en listas una fórmula cada que hay un operador :|:
+lista (f :|: g) =  (g:lista(f))
+lista f = f:[]
 
 ----------------------------------------------------------------------
 --                             PRUEBAS                             --
