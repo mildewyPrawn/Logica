@@ -95,7 +95,6 @@ interp (p :<=>: q) l1 = interp (p :=>: q) l1 && interp (q :=>: p) l1
 -- si en ψ las negaciones quedan únicamente frente a fórmulas atómicas y no hay
 -- presencias de conectivo de implicación, ni equivalencia.
 fnn :: Formula -> Formula
-fnn :: Formula -> Formula
 fnn (Prop p) = Prop p
 fnn (Neg p) = negacion (fnn p)
 fnn (p :&: q) = fnn p :&: fnn q
