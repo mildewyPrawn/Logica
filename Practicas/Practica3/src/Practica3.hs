@@ -42,22 +42,22 @@ varList (p :<=>: q) = repeticiones(varList(p) ++ varList(q))
 
 --Una función que recibe una fórmula y devuelve su negación.
 negacion :: Formula -> Formula
-negacion (Prop p) = (Neg (Prop p))
-negacion (Neg p) = (p)
-negacion (p :&: q) = (negacion p) :|: (negacion q)
-negacion (p :|: q) = (negacion p) :&: (negacion q)
-negacion (p :=>: q) = p :&: (negacion q)
-negacion (p :<=>: q) =(p :&: (negacion q)) :|: (q :&: (negacion p))
+negacion (Prop p) = Neg (Prop p)
+negacion (Neg p) = p
+negacion (p :&: q) = negacion p :|: negacion q
+negacion (p :|: q) = negacion p :&: negacion q
+negacion (p :=>: q) = p :&: negacion q
+negacion (p :<=>: q) = (p :&: negacion q) :|: (q :&: negacion p)
 
 --Una función que recibe una fórmula y elimina implicaciones y equivalencias.
 equivalencia :: Formula -> Formula
-equivalencia (Prop p) = (Prop p)
-equivalencia (Neg p) = (negacion (equivalencia p))
-equivalencia (p :&: q) = ((equivalencia p) :&: (equivalencia q))
-equivalencia (p :|: q) = ((equivalencia p) :|: (equivalencia q))
-equivalencia (p :=>: q) = ((negacion (equivalencia p)) :|: (equivalencia q))
-equivalencia (p :<=>: q) = (((negacion(equivalencia p)) :|: (equivalencia q))
-                           :&: ((negacion(equivalencia q)) :|: (equivalencia p)))
+equivalencia (Prop p) = Prop p
+equivalencia (Neg p) = negacion (equivalencia p)
+equivalencia (p :&: q) = equivalencia p :&: equivalencia q
+equivalencia (p :|: q) = equivalencia p :|: equivalencia q
+equivalencia (p :=>: q) = negacion (equivalencia p) :|: equivalencia q
+equivalencia (p :<=>: q) = (negacion(equivalencia p) :|: equivalencia q)
+                           :&: (negacion(equivalencia q) :|: equivalencia p)
 
 --Una función recursiva que recibe una fórmula proposicional y una lista de
 -- parejas de variables proposicionales. La función debe sustituir todas las
@@ -134,11 +134,23 @@ calculaS :: Formula -> [[Formula]]
 --calculaS f = map lista (calculaSAux(fnc f))
 calculaS f =
   let cnf = fnc(f)
-  in map lista (calculaSAux(cnf))
-
+  in map quitaD (quitaC(cnf))
+  
 --Función que recibe dos cláusulas y devuelve el resolvente de ambas.
 res :: [Formula] -> [Formula] -> [Formula]
-res = error "Es para que corra"
+res c1 [] = c1
+res [] c2 = c2
+res (Prop p:ps) (Neg(Prop q):nps) = if p == q
+                                    then []
+                                    else [Prop p, Neg(Prop q)] ++
+                                         res [Prop p] nps ++
+                                         res (ps) (Neg(Prop q):nps)
+res (Neg(Prop p):nps) (Prop q:qs) = if p == q
+                                    then []
+                                    else [Neg(Prop p), Prop q] ++
+                                         res [Neg(Prop p)] qs ++
+                                         res (nps) (Prop q:qs)
+res (x:xs) (y:ys) = res [x] (y:ys) ++ res (xs) (y:ys)
 
 --Función que indica si se obtiene la cláusula vacía después de aplicar el
 -- algoritmo de saturación a un conjunto de cláusulas.
@@ -204,12 +216,12 @@ pegar [] _ = []
 pegar (x:xs) (y:ys) = (x,y):(pegar xs ys)
 
 -- Función auxiliar que separa en listas una fórmula cada que hay un operador :&:
-calculaSAux (f :&: g) = (g:calculaSAux(f))
-calculaSAux f = f:[]
+quitaC (f :&: g) = (g:quitaC(f))
+quitaC f = f:[]
 
 -- Función auxiliar que separa en listas una fórmula cada que hay un operador :|:
-lista (f :|: g) =  (g:lista(f))
-lista f = f:[]
+quitaD (f :|: g) =  (g:quitaD(f))
+quitaD f = f:[]
 
 ----------------------------------------------------------------------
 --                             PRUEBAS                             --
