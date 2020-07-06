@@ -1,9 +1,9 @@
-%telefono(a).
-%telefono(b).
-%telefono(c).
-%telefono(d).
-%telefono(e).
-%telefono(f).
+%% telefono(a).
+%% telefono(b).
+%% telefono(c).
+%% telefono(d).
+%% telefono(e).
+%% telefono(f).
 telefono(g).
 
 arcos([a-b,b-c,b-e,c-d,d-e,e-f,e-g]).

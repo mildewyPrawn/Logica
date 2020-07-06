@@ -1,4 +1,4 @@
-(********************************************************************* 
+(*********************************************************************
        L\u00f3gica computacional 2018-2
        Pr\u00e1ctica 06: Coq- Deducci\u00f3n Natural e Inducci\u00f3n sobre listas.
        Selene Linares  
